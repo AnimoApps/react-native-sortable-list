@@ -240,7 +240,10 @@ export default class SortableList extends Component {
     }
 
     return (
-      <View style={containerStyle} ref={this._onRefContainer}>
+      <View 
+        style={containerStyle} 
+        ref={this._onRefContainer}
+        onLayout={this._onLayout}>
         <ScrollView
           nestedScrollEnabled={nestedScrollEnabled}
           disableIntervalMomentum={disableIntervalMomentum}
@@ -592,6 +595,17 @@ export default class SortableList extends Component {
   _stopAutoScroll() {
     clearInterval(this._autoScrollInterval);
     this._autoScrollInterval = null;
+  }
+    
+  _onLayout = () => {
+    // Every time the main view layout changes we need to update the container layout properties
+    this._container.measure((x, y, width, height, pageX, pageY) => {
+      this.setState({
+        containerLayout: {
+          x, y, width, height, pageX, pageY
+        },
+      });
+    });
   }
 
   _onLayoutRow(rowKey, {nativeEvent: {layout}}) {
