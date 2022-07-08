@@ -240,10 +240,7 @@ export default class SortableList extends Component {
     }
 
     return (
-      <View 
-        style={containerStyle} 
-        ref={this._onRefContainer}
-        onLayout={this._onLayout}>
+      <View style={containerStyle} ref={this._onRefContainer}>
         <ScrollView
           nestedScrollEnabled={nestedScrollEnabled}
           disableIntervalMomentum={disableIntervalMomentum}
@@ -274,7 +271,6 @@ export default class SortableList extends Component {
   _renderRows() {
     const {horizontal, rowActivationTime, sortingEnabled, renderRow} = this.props;
     const {animated, order, data, activeRowKey, releasedRowKey, rowsLayouts} = this.state;
-
 
     let nextX = 0;
     let nextY = 0;
@@ -383,6 +379,16 @@ export default class SortableList extends Component {
           });
         });
       });
+  }
+
+  _updateContainerLayout = () => {
+    this._container.measure((x, y, width, height, pageX, pageY) => {
+      this.setState({
+        containerLayout: {
+          x, y, width, height, pageX, pageY
+        },
+      });
+    });
   }
 
   _scroll(animated) {
@@ -596,17 +602,6 @@ export default class SortableList extends Component {
     clearInterval(this._autoScrollInterval);
     this._autoScrollInterval = null;
   }
-    
-  _onLayout = () => {
-    // Every time the main view layout changes we need to update the container layout properties
-    this._container.measure((x, y, width, height, pageX, pageY) => {
-      this.setState({
-        containerLayout: {
-          x, y, width, height, pageX, pageY
-        },
-      });
-    });
-  }
 
   _onLayoutRow(rowKey, {nativeEvent: {layout}}) {
     this._resolveRowLayout[rowKey]({rowKey, layout});
@@ -633,6 +628,8 @@ export default class SortableList extends Component {
     if (this.props.onActivateRow) {
       this.props.onActivateRow(rowKey);
     }
+
+    this._updateContainerLayout();
   };
 
   _onPressRow = (rowKey) => {
