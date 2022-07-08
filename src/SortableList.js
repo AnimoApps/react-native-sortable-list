@@ -18,7 +18,7 @@ uniqueRowKey.id = 0
 const STYLE_TYPE = PropTypes.oneOfType([
   PropTypes.number, 
   PropTypes.object, 
-  PropTypes.arrayOf([PropTypes.number, PropTypes.object])
+  PropTypes.array
 ])
 
 export default class SortableList extends Component {
