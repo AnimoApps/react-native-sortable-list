@@ -15,7 +15,11 @@ uniqueRowKey.id = 0
 
 // react-native seems to sometimes represent stylesheet entries as numbers, and sometimes as objects.
 // See: https://stackoverflow.com/questions/41483862/how-are-styles-mapped-to-numbers-in-react-native
-const STYLE_TYPE = PropTypes.oneOfType([PropTypes.number, PropTypes.object])
+const STYLE_TYPE = PropTypes.oneOfType([
+  PropTypes.number, 
+  PropTypes.object, 
+  PropTypes.arrayOf([PropTypes.number, PropTypes.object])
+])
 
 export default class SortableList extends Component {
   static propTypes = {
