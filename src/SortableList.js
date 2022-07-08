@@ -135,7 +135,11 @@ export default class SortableList extends Component {
         });
       });
 
-      if (Object.keys(nextData).length > Object.keys(currentData).length) {
+      const rowsLengthChanged = 
+        Object.keys(nextData).length > Object.keys(currentData).length ||
+        Object.keys(nextData).length < Object.keys(currentData).length;
+
+      if (rowsLengthChanged) {
         this.setState({
           animated: false,
           data: nextData,
